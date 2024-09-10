@@ -7,7 +7,7 @@ def main():
     Our app uses advanced machine learning models to predict diseases based on your symptoms. 
     Enter your symptoms, and we'll provide you with the most accurate prediction using four powerful models: XGBoost, LightGBM, SVM, and CatBoost.
     """)
-
+    st.sidebar.title("Welcome")
     st.sidebar.success("Select a page above.")
 
     # Add a description and images/icons for each section
