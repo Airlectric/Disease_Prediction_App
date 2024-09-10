@@ -1,76 +1,94 @@
-# app.py
 import streamlit as st
 import numpy as np
 import pandas as pd
-from modelsapi import predict_disease, classes
+from modelsapi import predict_disease, symptoms_list
+from aiAdvice import entry_point
 
 # Streamlit app layout
-st.title("Disease Prediction App")
-st.write("Please select the symptoms:")
+st.title("🩺 Disease Prediction App")
 
-# Define the list of symptoms (same as in the model_predict.py)
-symptoms_list = [
-    'itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing',
-    'shivering', 'chills', 'joint_pain', 'stomach_pain', 'acidity', 
-    'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition', 
-    'spotting_ urination', 'fatigue', 'weight_gain', 'anxiety', 
-    'cold_hands_and_feets', 'mood_swings', 'weight_loss', 'restlessness', 
-    'lethargy', 'patches_in_throat', 'irregular_sugar_level', 'cough', 
-    'high_fever', 'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 
-    'indigestion', 'headache', 'yellowish_skin', 'dark_urine', 'nausea', 
-    'loss_of_appetite', 'pain_behind_the_eyes', 'back_pain', 'constipation', 
-    'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 
-    'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 
-    'swelling_of_stomach', 'swelled_lymph_nodes', 'malaise', 
-    'blurred_and_distorted_vision', 'phlegm', 'throat_irritation', 
-    'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 
-    'chest_pain', 'weakness_in_limbs', 'fast_heart_rate', 
-    'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool', 
-    'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising', 
-    'obesity', 'swollen_legs', 'swollen_blood_vessels', 'puffy_face_and_eyes', 
-    'enlarged_thyroid', 'brittle_nails', 'swollen_extremeties', 
-    'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips', 
-    'slurred_speech', 'knee_pain', 'hip_joint_pain', 'muscle_weakness', 
-    'stiff_neck', 'swelling_joints', 'movement_stiffness', 'spinning_movements', 
-    'loss_of_balance', 'unsteadiness', 'weakness_of_one_body_side', 
-    'loss_of_smell', 'bladder_discomfort', 'foul_smell_of urine', 
-    'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 
-    'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 
-    'altered_sensorium', 'red_spots_over_body', 'belly_pain', 
-    'abnormal_menstruation', 'dischromic _patches', 'watering_from_eyes', 
-    'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum', 
-    'rusty_sputum', 'lack_of_concentration', 'visual_disturbances', 
-    'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 
-    'stomach_bleeding', 'distention_of_abdomen', 'history_of_alcohol_consumption', 
-    'fluid_overload.1', 'blood_in_sputum', 'prominent_veins_on_calf', 
-    'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 
-    'scurring', 'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 
-    'inflammatory_nails', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze'
-]
+# Create two tabs: one for manual input and another for text description input
+tabs = st.tabs(["🌡️ Manual Symptom Input", "📝 Text Description Input"])
 
-# Split symptoms into three columns for compact display
-columns = st.columns(3)
+# --- Manual Symptom Input Tab ---
+with tabs[0]:
+    st.header("🩹 Select Symptoms")
+    st.write("Please select the symptoms you're experiencing:")
 
-# Create dictionaries to store symptom inputs
-symptoms_input = {}
+    # Initialize session state for pop-up visibility
+    if 'show_popup' not in st.session_state:
+        st.session_state.show_popup = False
 
-# Assign each symptom input to a selectbox in three columns
-for idx, symptom in enumerate(symptoms_list):
-    col = columns[idx % 3]  # Cycle through columns
-    symptoms_input[symptom] = col.selectbox(f"{symptom.replace('_', ' ').capitalize()}", (0, 1))
+    # Create a form for symptom input
+    with st.form(key='symptom_form', clear_on_submit=True):
+        # Create dictionaries to store symptom inputs
+        symptoms_input = {}
 
-# Button to predict disease
-if st.button("Predict Disease"):
-    # Convert the symptom input dictionary to a list of values (0 or 1)
-    symptoms_values = list(symptoms_input.values())
-    
-    # Call the prediction function (passing symptoms as values)
-    predicted_disease = predict_disease(symptoms_input)  # Adjusted to take dict as input
-    
-    # Display the output with styling
-    st.markdown(
-        f"<div style='text-align: center; font-size: 24px; font-weight: bold; color: green;'>"
-        f"The predicted disease is: {predicted_disease}"
-        f"</div>",
-        unsafe_allow_html=True
-    )
+        # Split symptoms into three columns for compact display
+        columns = st.columns(3)
+
+        # Assign each symptom input to a selectbox in three columns
+        for idx, symptom in enumerate(symptoms_list):
+            col = columns[idx % 3]  # Cycle through columns
+            symptoms_input[symptom] = col.selectbox(f"{symptom.replace('_', ' ').capitalize()}", (0, 1))
+
+        # Button to predict disease
+        submit_button = st.form_submit_button(label='🔍 Predict Disease')
+    predicted_disease = None
+    # Check if the submit button was pressed
+    if submit_button:
+        # Get the sum of all inputs (i.e. number of symptoms selected)
+        selected_symptoms_count = sum(symptoms_input.values())
+
+        if selected_symptoms_count == 0:
+            # Alert the user if no symptoms are selected
+            st.warning("⚠️ Please select at least one symptom to proceed.")
+        elif selected_symptoms_count < 2:
+            # Alert the user if fewer than 2 symptoms are selected
+            st.warning("⚠️ Please select at least 2 symptoms for a more accurate prediction.")
+        else:
+            # Call the prediction function (passing symptoms as values) if conditions are met
+            predicted_disease = predict_disease(symptoms_input)  # Adjusted to take dict as input
+
+            # Set the popup visibility to True
+            st.session_state.show_popup = True
+
+    # Display a modal-like experience using st.expander
+    if st.session_state.show_popup:
+        with st.expander("🧠 See Predicted Disease", expanded=True):
+            Disease_prediction1 = entry_point('predicted_disease', predicted_disease)
+            
+            # Display result creatively with emojis
+            st.markdown(f"### 🩺 **Predicted Disease**: **{Disease_prediction1 ['predicted_disease']}**")
+            st.markdown(f"📜 **Description**: {Disease_prediction1 ['description']}")
+            st.markdown(f"🚑 **Advice**: {Disease_prediction1 ['advice']}")
+            st.markdown(f"🔍 **Important Note**: {Disease_prediction1['note']}")
+           
+
+# --- Text Description Input Tab ---
+with tabs[1]:
+    st.header("📝 Provide a Symptom Description")
+    st.write("Please provide a text description of your symptoms:")
+
+    # Create a form for the text description input
+    with st.form(key='description_form', clear_on_submit=True):
+        # Input box for user to provide symptom description
+        symptom_description = st.text_area("Enter your symptoms", placeholder="Describe your symptoms...")
+
+        # Button to predict disease based on text input
+        submit_description = st.form_submit_button(label="🔍 Predict from Description")
+
+    # Check if the submit button was pressed
+    if submit_description:
+        if not symptom_description.strip():
+            st.warning("⚠️ Please provide a description of your symptoms.")
+        else:
+            # Call the entry_point function to process the text description
+            Disease_prediction2 = entry_point('userinput', symptom_description)
+            
+            # Display result creatively with emojis
+            st.markdown(f"### 🩺 **Predicted Disease**: **{Disease_prediction2['predicted_disease']}**")
+            st.markdown(f"📜 **Description**: {Disease_prediction2['description']}")
+            st.markdown(f"🚑 **Advice**: {Disease_prediction2['advice']}")
+            st.markdown(f"🔍 **Important Note**: {Disease_prediction2['note']}")
+
