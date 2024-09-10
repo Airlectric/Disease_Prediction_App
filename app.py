@@ -1,40 +1,28 @@
-import streamlit as st
-from homepage import homepage
-from model_about import model_about
-from predict_disease import predict_disease_page
-from health_data import historical_health_data_page
+# import streamlit as st
 
-def switch_page(page_name):
-    st.session_state.page = page_name
+# # Set the page configuration
+# st.set_page_config(page_title="My Streamlit App", layout="wide")
 
-if 'page' not in st.session_state:
-    st.session_state.page = 'homepage'
+# # Introductory code block
+# st.title("Welcome to My Streamlit App!")
+# st.write("This app demonstrates the use of Streamlit for building interactive applications.")
+# st.write("Use the sidebar to navigate between different pages.")
 
-def main():
-    # Load and apply styles from styles.css
-    with open("styles.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+# # Define the page titles and import the corresponding modules
+# pages = {
+#     "Home": "01_homepage",
+#     "Health Data": "02_health_data",
+#     "Model About": "03_model_about",
+#     "Predict Disease": "04_predict_disease"
+# }
 
-    # Sidebar for navigation
-    st.sidebar.title("Navigation")
-    page_selection = st.sidebar.radio(
-        "Go to",
-        ["Homepage", "Model About", "Predict Disease", "Health Data"]
-    )
+# # Create a sidebar with a title
+# st.sidebar.title("Navigation")
 
-    # Update session state based on sidebar choice
-    selected_page = page_selection.lower().replace(" ", "_")
-    switch_page(selected_page)
+# # Create a radio button for navigation
+# selected_page = st.sidebar.radio("Go to", list(pages.keys()))
 
-    # Check which page is active and display content accordingly
-    if st.session_state.page == 'homepage':
-        homepage()
-    elif st.session_state.page == 'model_about':
-        model_about()
-    elif st.session_state.page == 'predict_disease':
-        predict_disease_page()
-    elif st.session_state.page == 'health_data':
-        historical_health_data_page()
-
-if __name__ == '__main__':
-    main()
+# # Import and run the selected page function
+# if selected_page:
+#     module = __import__(f'pages.{pages[selected_page]}', fromlist=['run'])
+#     module.run()

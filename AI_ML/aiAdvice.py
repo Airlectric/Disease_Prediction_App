@@ -3,7 +3,7 @@ from langchain.agents import Tool
 from langchain.tools.base import BaseTool
 from langgraph.graph import Graph
 import streamlit as st
-from modelsapi import symptoms_list,predict_disease
+from .modelsapi import symptoms_list, predict_disease
 
 # Initialize AI model (Groq)
 groq_api_key = st.secrets["general"]["GROQ_API_KEY"]

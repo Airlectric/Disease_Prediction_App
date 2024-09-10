@@ -1,8 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from modelsapi import predict_disease, symptoms_list
-from aiAdvice import entry_point
+from AI_ML import entry_point,predict_disease, symptoms_list
 import streamlit.components.v1 as com
 
 with st.container():

@@ -7,7 +7,6 @@ def historical_health_data_page():
     st.title("Historical Health Data")
     st.write("Visualizing your health data over time.")
 
-    # Example health data visualization
     dates = pd.date_range(start="2023-01-01", periods=30, freq='D')
     values = np.random.randint(1, 100, size=30)
 
@@ -18,3 +17,5 @@ def historical_health_data_page():
     plt.ylabel('Health Metric')
     plt.grid()
     st.pyplot(plt)
+
+historical_health_data_page()

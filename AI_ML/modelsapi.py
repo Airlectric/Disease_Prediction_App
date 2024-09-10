@@ -2,13 +2,23 @@ import joblib
 import numpy as np
 import pandas as pd
 from collections import Counter
+import joblib
+import os
 
-# Load models
-best_xgb = joblib.load('models/best_xgb_model.pkl')
-best_lgb = joblib.load('models/best_lgb_model.pkl')
-svm_model = joblib.load('models/svm_model.pkl')
-cat_model = joblib.load('models/cat_model.pkl')
+# Get the current file's directory
+current_dir = os.path.dirname(__file__)
 
+# Construct the full path to the model files
+best_xgb_path = os.path.join(current_dir, 'models', 'best_xgb_model.pkl')
+best_lgb_path = os.path.join(current_dir, 'models', 'best_lgb_model.pkl')
+svm_model_path = os.path.join(current_dir, 'models', 'svm_model.pkl')
+cat_model_path = os.path.join(current_dir, 'models', 'cat_model.pkl')
+
+# Load the models
+best_xgb = joblib.load(best_xgb_path)
+best_lgb = joblib.load(best_lgb_path)
+svm_model = joblib.load(svm_model_path)
+cat_model = joblib.load(cat_model_path)
 
 
 symptoms_list = [
