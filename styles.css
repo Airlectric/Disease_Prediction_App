@@ -1,0 +1,154 @@
+/* Global styles */
+
+body {
+    font-family: Open Sans, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #333;
+    margin-bottom: 0.5em;
+    font-weight: 500;
+  }
+  
+  p {
+    margin-bottom: 1em;
+    font-size: 16px;
+    color: #666;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #337ab7;
+  }
+  
+  a:hover {
+    color: #23527c;
+  }
+  
+  /* Navigation sidebar */
+  
+  .stSidebar {
+    background-color: #333;
+    padding: 1em;
+    border-right: 1px solid #444;
+    width: 250px;
+  }
+  
+  .stSidebar .stRadio {
+    margin-bottom: 0.5em;
+    color: #fff;
+  }
+  
+  .stSidebar .stRadio:hover {
+    background-color: #444;
+  }
+  
+  .stSidebar .stRadio:checked {
+    background-color: #337ab7;
+  }
+  
+  /* Homepage */
+  
+  .stApp {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .stApp .stButton {
+    margin-top: 20px;
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .stApp .stButton:hover {
+    background-color: #23527c;
+  }
+  
+  /* Predict Disease page */
+  
+  .predict-disease-page {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .predict-disease-page .stRadio {
+    margin-bottom: 0.5em;
+    color: #666;
+  }
+  
+  .predict-disease-page .stButton {
+    margin-top: 20px;
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .predict-disease-page .stButton:hover {
+    background-color: #23527c;
+  }
+  
+  /* Daily Health Tip */
+  
+  .daily-health-tip {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+  
+  /* Success message */
+  
+  .stSuccess {
+    background-color: #dff0df;
+    padding: 10px;
+    border: 1px solid #3e8e41;
+    border-radius: 5px;
+    color: #3e8e41;
+  }
+  
+  .stSuccess {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  /* Additional styles */
+  
+  .card {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .card h2 {
+    margin-top: 0;
+  }
+  
+  .card p {
+    margin-bottom: 10px;
+  }

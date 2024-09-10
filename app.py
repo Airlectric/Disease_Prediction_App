@@ -1,94 +1,40 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
-from modelsapi import predict_disease, symptoms_list
-from aiAdvice import entry_point
+from homepage import homepage
+from model_about import model_about
+from predict_disease import predict_disease_page
+from health_data import historical_health_data_page
 
-# Streamlit app layout
-st.title("🩺 Disease Prediction App")
+def switch_page(page_name):
+    st.session_state.page = page_name
 
-# Create two tabs: one for manual input and another for text description input
-tabs = st.tabs(["🌡️ Manual Symptom Input", "📝 Text Description Input"])
+if 'page' not in st.session_state:
+    st.session_state.page = 'homepage'
 
-# --- Manual Symptom Input Tab ---
-with tabs[0]:
-    st.header("🩹 Select Symptoms")
-    st.write("Please select the symptoms you're experiencing:")
+def main():
+    # Load and apply styles from styles.css
+    with open("styles.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-    # Initialize session state for pop-up visibility
-    if 'show_popup' not in st.session_state:
-        st.session_state.show_popup = False
+    # Sidebar for navigation
+    st.sidebar.title("Navigation")
+    page_selection = st.sidebar.radio(
+        "Go to",
+        ["Homepage", "Model About", "Predict Disease", "Health Data"]
+    )
 
-    # Create a form for symptom input
-    with st.form(key='symptom_form', clear_on_submit=True):
-        # Create dictionaries to store symptom inputs
-        symptoms_input = {}
+    # Update session state based on sidebar choice
+    selected_page = page_selection.lower().replace(" ", "_")
+    switch_page(selected_page)
 
-        # Split symptoms into three columns for compact display
-        columns = st.columns(3)
+    # Check which page is active and display content accordingly
+    if st.session_state.page == 'homepage':
+        homepage()
+    elif st.session_state.page == 'model_about':
+        model_about()
+    elif st.session_state.page == 'predict_disease':
+        predict_disease_page()
+    elif st.session_state.page == 'health_data':
+        historical_health_data_page()
 
-        # Assign each symptom input to a selectbox in three columns
-        for idx, symptom in enumerate(symptoms_list):
-            col = columns[idx % 3]  # Cycle through columns
-            symptoms_input[symptom] = col.selectbox(f"{symptom.replace('_', ' ').capitalize()}", (0, 1))
-
-        # Button to predict disease
-        submit_button = st.form_submit_button(label='🔍 Predict Disease')
-    predicted_disease = None
-    # Check if the submit button was pressed
-    if submit_button:
-        # Get the sum of all inputs (i.e. number of symptoms selected)
-        selected_symptoms_count = sum(symptoms_input.values())
-
-        if selected_symptoms_count == 0:
-            # Alert the user if no symptoms are selected
-            st.warning("⚠️ Please select at least one symptom to proceed.")
-        elif selected_symptoms_count < 2:
-            # Alert the user if fewer than 2 symptoms are selected
-            st.warning("⚠️ Please select at least 2 symptoms for a more accurate prediction.")
-        else:
-            # Call the prediction function (passing symptoms as values) if conditions are met
-            predicted_disease = predict_disease(symptoms_input)  # Adjusted to take dict as input
-
-            # Set the popup visibility to True
-            st.session_state.show_popup = True
-
-    # Display a modal-like experience using st.expander
-    if st.session_state.show_popup:
-        with st.expander("🧠 See Predicted Disease", expanded=True):
-            Disease_prediction1 = entry_point('predicted_disease', predicted_disease)
-            
-            # Display result creatively with emojis
-            st.markdown(f"### 🩺 **Predicted Disease**: **{Disease_prediction1 ['predicted_disease']}**")
-            st.markdown(f"📜 **Description**: {Disease_prediction1 ['description']}")
-            st.markdown(f"🚑 **Advice**: {Disease_prediction1 ['advice']}")
-            st.markdown(f"🔍 **Important Note**: {Disease_prediction1['note']}")
-           
-
-# --- Text Description Input Tab ---
-with tabs[1]:
-    st.header("📝 Provide a Symptom Description")
-    st.write("Please provide a text description of your symptoms:")
-
-    # Create a form for the text description input
-    with st.form(key='description_form', clear_on_submit=True):
-        # Input box for user to provide symptom description
-        symptom_description = st.text_area("Enter your symptoms", placeholder="Describe your symptoms...")
-
-        # Button to predict disease based on text input
-        submit_description = st.form_submit_button(label="🔍 Predict from Description")
-
-    # Check if the submit button was pressed
-    if submit_description:
-        if not symptom_description.strip():
-            st.warning("⚠️ Please provide a description of your symptoms.")
-        else:
-            # Call the entry_point function to process the text description
-            Disease_prediction2 = entry_point('userinput', symptom_description)
-            
-            # Display result creatively with emojis
-            st.markdown(f"### 🩺 **Predicted Disease**: **{Disease_prediction2['predicted_disease']}**")
-            st.markdown(f"📜 **Description**: {Disease_prediction2['description']}")
-            st.markdown(f"🚑 **Advice**: {Disease_prediction2['advice']}")
-            st.markdown(f"🔍 **Important Note**: {Disease_prediction2['note']}")
-
+if __name__ == '__main__':
+    main()
