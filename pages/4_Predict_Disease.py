@@ -13,7 +13,7 @@ def predict_disease_page():
             com.iframe("https://lottie.host/embed/e977d988-97a3-401f-aa70-b5909e09b94e/y6WCoJ6vXt.json")
 
         with col2:
-            st.title('🩺 Disease Prediction')
+            st.title('Disease Prediction')
 
     # Create two tabs: one for manual input and another for text description input
     tabs = st.tabs(["🌡️ Manual Symptom Input", "📝 Text Description Input"])
@@ -28,20 +28,24 @@ def predict_disease_page():
             st.session_state.show_popup = False
 
         # Create a form for symptom input
-        with st.form(key='symptom_form', clear_on_submit=True):
-            # Create dictionaries to store symptom inputs
-            symptoms_input = {}
+       # Create a form for symptom input
+    with st.form(key='symptom_form', clear_on_submit=True):
+        # Create a dictionary to store symptom inputs
+        symptoms_input = {}
 
-            # Split symptoms into three columns for compact display
-            columns = st.columns(3)
+        # Split symptoms into three columns for compact display
+        columns = st.columns(3)
 
-            # Assign each symptom input to a selectbox in three columns
-            for idx, symptom in enumerate(symptoms_list):
-                col = columns[idx % 3]  # Cycle through columns
-                symptoms_input[symptom] = col.selectbox(f"{symptom.replace('_', ' ').capitalize()}", (0, 1))
+        # Assign each symptom input to a selectbox in three columns
+        for idx, symptom in enumerate(symptoms_list):
+            col = columns[idx % 3]  # Cycle through columns
+            # Display "Yes" and "No" in the frontend, map to 1 and 0 in the backend
+            user_input = col.selectbox(f"{symptom.replace('_', ' ').capitalize()}", ("No", "Yes"))
+            # Map "Yes" to 1 and "No" to 0
+            symptoms_input[symptom] = 1 if user_input == "Yes" else 0
 
-            # Button to predict disease
-            submit_button = st.form_submit_button(label='🔍 Predict Disease')
+        # Button to predict disease
+        submit_button = st.form_submit_button(label='🔍 Predict Disease')
         
         # Initialize predicted_disease
         predicted_disease = None
@@ -53,10 +57,10 @@ def predict_disease_page():
 
             if selected_symptoms_count == 0:
                 # Alert the user if no symptoms are selected
-                st.warning("⚠️ Please select at least one symptom to proceed.")
-            elif selected_symptoms_count < 2:
-                # Alert the user if fewer than 2 symptoms are selected
-                st.warning("⚠️ Please select at least 2 symptoms for a more accurate prediction.")
+                st.warning("⚠️ Please select more than one symptom to proceed.")
+            elif selected_symptoms_count < 10:
+                # Alert the user if fewer than 10 symptoms are selected
+                st.warning("⚠️ Please select at least 10 symptoms for a more accurate prediction.")
             else:
                 # Call the prediction function (passing symptoms as values) if conditions are met
                 predicted_disease = predict_disease(symptoms_input)  # Adjusted to take dict as input
