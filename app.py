@@ -1,12 +1,15 @@
 import streamlit as st
 
 def main():
+
+    st.set_page_config(initial_sidebar_state='expanded')
     # Set up the page title and subtitle
     st.title("🌟 Welcome to the Disease Prediction App")
     st.write("""
     Our app uses advanced machine learning models to predict diseases based on your symptoms. 
     Enter your symptoms, and we'll provide you with the most accurate prediction using four powerful models: XGBoost, LightGBM, SVM, and CatBoost.
     """)
+
     st.sidebar.title("Welcome")
     st.sidebar.success("Select a page above.")
 

@@ -28,56 +28,55 @@ def predict_disease_page():
             st.session_state.show_popup = False
 
         # Create a form for symptom input
-       # Create a form for symptom input
-    with st.form(key='symptom_form', clear_on_submit=True):
-        # Create a dictionary to store symptom inputs
-        symptoms_input = {}
+        with st.form(key='symptom_form', clear_on_submit=True):
+            # Create a dictionary to store symptom inputs
+            symptoms_input = {}
 
-        # Split symptoms into three columns for compact display
-        columns = st.columns(3)
+            # Split symptoms into three columns for compact display
+            columns = st.columns(3)
 
-        # Assign each symptom input to a selectbox in three columns
-        for idx, symptom in enumerate(symptoms_list):
-            col = columns[idx % 3]  # Cycle through columns
-            # Display "Yes" and "No" in the frontend, map to 1 and 0 in the backend
-            user_input = col.selectbox(f"{symptom.replace('_', ' ').capitalize()}", ("No", "Yes"))
-            # Map "Yes" to 1 and "No" to 0
-            symptoms_input[symptom] = 1 if user_input == "Yes" else 0
+            # Assign each symptom input to a selectbox in three columns
+            for idx, symptom in enumerate(symptoms_list):
+                col = columns[idx % 3]  # Cycle through columns
+                # Display "Yes" and "No" in the frontend, map to 1 and 0 in the backend
+                user_input = col.selectbox(f"{symptom.replace('_', ' ').capitalize()}", ("No", "Yes"))
+                # Map "Yes" to 1 and "No" to 0
+                symptoms_input[symptom] = 1 if user_input == "Yes" else 0
 
-        # Button to predict disease
-        submit_button = st.form_submit_button(label='🔍 Predict Disease')
-        
-        # Initialize predicted_disease
-        predicted_disease = None
+            # Button to predict disease
+            submit_button = st.form_submit_button(label='🔍 Predict Disease')
+            
+            # Initialize predicted_disease
+            predicted_disease = None
 
-        # Check if the submit button was pressed
-        if submit_button:
-            # Get the sum of all inputs (i.e., number of symptoms selected)
-            selected_symptoms_count = sum(symptoms_input.values())
+            # Check if the submit button was pressed
+            if submit_button:
+                # Get the sum of all inputs (i.e., number of symptoms selected)
+                selected_symptoms_count = sum(symptoms_input.values())
 
-            if selected_symptoms_count == 0:
-                # Alert the user if no symptoms are selected
-                st.warning("⚠️ Please select more than one symptom to proceed.")
-            elif selected_symptoms_count < 10:
-                # Alert the user if fewer than 10 symptoms are selected
-                st.warning("⚠️ Please select at least 10 symptoms for a more accurate prediction.")
-            else:
-                # Call the prediction function (passing symptoms as values) if conditions are met
-                predicted_disease = predict_disease(symptoms_input)  # Adjusted to take dict as input
+                if selected_symptoms_count == 0:
+                    # Alert the user if no symptoms are selected
+                    st.warning("⚠️ Please select more than one symptom to proceed.")
+                elif selected_symptoms_count < 10:
+                    # Alert the user if fewer than 10 symptoms are selected
+                    st.warning("⚠️ Please select at least 10 symptoms for a more accurate prediction.")
+                else:
+                    # Call the prediction function (passing symptoms as values) if conditions are met
+                    predicted_disease = predict_disease(symptoms_input)
 
-                # Set the popup visibility to True
-                st.session_state.show_popup = True
+                    # Set the popup visibility to True
+                    st.session_state.show_popup = True
 
-        # Display a modal-like experience using st.expander
-        if st.session_state.show_popup:
-            with st.expander("🧠 See Predicted Disease", expanded=True):
-                Disease_prediction1 = entry_point('predicted_disease', predicted_disease)
-                
-                # Display result creatively with emojis
-                st.markdown(f"### 🩺 **Predicted Disease**: **{Disease_prediction1['predicted_disease']}**")
-                st.markdown(f"📜 **Description**: {Disease_prediction1['description']}")
-                st.markdown(f"🚑 **Advice**: {Disease_prediction1['advice']}")
-                st.markdown(f"🔍 **Important Note**: {Disease_prediction1['note']}")
+            # Display a modal-like experience using st.expander
+            if st.session_state.show_popup:
+                with st.expander("🧠 See Predicted Disease", expanded=True):
+                    Disease_prediction1 = entry_point('predicted_disease', predicted_disease)
+                    
+                    # Display result creatively with emojis
+                    st.markdown(f"### 🩺 **Predicted Disease**: **{Disease_prediction1['predicted_disease']}**")
+                    st.markdown(f"📜 **Description**: {Disease_prediction1['description']}")
+                    st.markdown(f"🚑 **Advice**: {Disease_prediction1['advice']}")
+                    st.markdown(f"🔍 **Important Note**: {Disease_prediction1['note']}")
 
     # --- Text Description Input Tab ---
     with tabs[1]:
