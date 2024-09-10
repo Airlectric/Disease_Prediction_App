@@ -1,8 +1,7 @@
 import streamlit as st
 
 def main():
-
-    st.set_page_config(initial_sidebar_state='expanded')
+    
     # Set up the page title and subtitle
     st.title("🌟 Welcome to the Disease Prediction App")
     st.write("""
