@@ -88,7 +88,7 @@ def extract_symptoms_from_description(state):
     # print(f"\n[DEBUG] Number of matched symptoms: {matched_symptoms_count}")
 
     # If no symptoms are matched or fewer than 10 symptoms are marked as 1, return None
-    if matched_symptoms_count < 10:
+    if matched_symptoms_count < 5:
         return None
 
     return symptoms_dict

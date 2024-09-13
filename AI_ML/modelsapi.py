@@ -13,12 +13,14 @@ best_xgb_path = os.path.join(current_dir, 'models', 'best_xgb_model.pkl')
 best_lgb_path = os.path.join(current_dir, 'models', 'best_lgb_model.pkl')
 svm_model_path = os.path.join(current_dir, 'models', 'svm_model.pkl')
 cat_model_path = os.path.join(current_dir, 'models', 'cat_model.pkl')
+label_encoder_path = os.path.join(current_dir, 'models','label_encoder.joblib')
 
 # Load the models
 best_xgb = joblib.load(best_xgb_path)
 best_lgb = joblib.load(best_lgb_path)
 svm_model = joblib.load(svm_model_path)
 cat_model = joblib.load(cat_model_path)
+label_encoder = joblib.load(label_encoder_path)
 
 
 symptoms_list = [
@@ -61,22 +63,25 @@ symptoms_list = [
 ]
 
 
-# List of disease classes
-classes = ['Fungal infection', 'Allergy', 'GERD', 'Chronic cholestasis', 'Drug Reaction', 
-           'Peptic ulcer disease', 'AIDS', 'Diabetes ', 'Gastroenteritis', 'Bronchial Asthma', 
-           'Hypertension ', 'Migraine', 'Cervical spondylosis', 'Paralysis (brain hemorrhage)', 
-           'Jaundice', 'Malaria', 'Chicken pox', 'Dengue', 'Typhoid', 'Hepatitis A', 
-           'Hepatitis B', 'Hepatitis C', 'Hepatitis D', 'Hepatitis E', 'Alcoholic hepatitis', 
-           'Tuberculosis', 'Common Cold', 'Pneumonia', 'Dimorphic hemorrhoids (piles)', 
-           'Heart attack', 'Varicose veins', 'Hypothyroidism', 'Hyperthyroidism', 
-           'Hypoglycemia', 'Osteoarthritis', 'Arthritis', '(Vertigo) Paroxysmal Positional Vertigo', 
-           'Acne', 'Urinary tract infection', 'Psoriasis', 'Impetigo']
-def predict_disease(symptoms_input):
+# # List of disease classes
+# classes = ['Fungal infection', 'Allergy', 'GERD', 'Chronic cholestasis', 'Drug Reaction', 
+#            'Peptic ulcer disease', 'AIDS', 'Diabetes ', 'Gastroenteritis', 'Bronchial Asthma', 
+#            'Hypertension ', 'Migraine', 'Cervical spondylosis', 'Paralysis (brain hemorrhage)', 
+#            'Jaundice', 'Malaria', 'Chicken pox', 'Dengue', 'Typhoid', 'Hepatitis A', 
+#            'Hepatitis B', 'Hepatitis C', 'Hepatitis D', 'Hepatitis E', 'Alcoholic hepatitis', 
+#            'Tuberculosis', 'Common Cold', 'Pneumonia', 'Dimorphic hemorrhoids (piles)', 
+#            'Heart attack', 'Varicose veins', 'Hypothyroidism', 'Hyperthyroidism', 
+#            'Hypoglycemia', 'Osteoarthritis', 'Arthritis', '(Vertigo) Paroxysmal Positional Vertigo', 
+#            'Acne', 'Urinary tract infection', 'Psoriasis', 'Impetigo']
+
+
+def predict_disease(symptoms_input, label_encoder =  label_encoder):
     """
     Predicts disease based on symptoms input using multiple models and selects the most frequent prediction.
     
     Args:
     symptoms_input (dict or None): Input symptoms as features. If None, it means the symptoms were insufficient.
+    label_encoder (LabelEncoder): The label encoder used for encoding and decoding disease labels.
     
     Returns:
     str: The predicted disease (most frequent prediction) or an error message if symptoms are insufficient.
@@ -101,8 +106,7 @@ def predict_disease(symptoms_input):
     # Find the most frequent prediction
     most_common_prediction = Counter(model_predictions).most_common(1)[0][0]
     
-    # Ensure the predicted index is valid
-    if most_common_prediction >= len(classes):
-        return 'Invalid index'
+    # Use the label encoder to get the disease name from the predicted index
+    predicted_disease = label_encoder.inverse_transform([most_common_prediction])[0]
     
-    return classes[most_common_prediction]
+    return predicted_disease
