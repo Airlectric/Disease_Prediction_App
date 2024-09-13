@@ -51,8 +51,9 @@ def extract_symptoms_from_description(state):
                   Expected format: {'symptoms_input': 'user provided text'}
 
     Returns:
-    dict: A dictionary where keys are symptoms and values are 0 or 1, reflecting 
-          whether the symptom was mentioned in the user's description.
+    dict or None: A dictionary where keys are symptoms and values are 0 or 1, reflecting 
+                  whether the symptom was mentioned in the user's description.
+                  Returns None if no symptoms are matched or less than 10 are present.
     """
     # Get the symptoms description from the input state
     description = state['symptoms_input']
@@ -64,7 +65,7 @@ def extract_symptoms_from_description(state):
     description = description.lower()
 
     # Use AI model to assist in extracting symptoms from the description
-    ai_query = f"Identify symptoms from the following description: '{description}'. List the symptoms using words from the predefined list{symptoms_list}."
+    ai_query = f"Identify symptoms from the following description: '{description}'. List the symptoms using words from the predefined list {symptoms_list}. If the description is gibberish or not sufficient send none null response."
     response = model.invoke(ai_query)
     
     # Extract symptom list from AI response and clean it
@@ -79,8 +80,16 @@ def extract_symptoms_from_description(state):
         if symptom_clean in description or any(symptom_clean in ai_symptom for ai_symptom in ai_extracted_symptoms):
             symptoms_dict[symptom] = 1  # Mark the symptom as present in the dictionary
 
+    # Count the number of symptoms marked as 1
+    matched_symptoms_count = sum(symptoms_dict.values())
+
     # Debugging statement: print the dictionary to see what was updated
-    print("\n[DEBUG] Symptoms Dictionary after extraction:", symptoms_dict)
+    # print("\n[DEBUG] Symptoms Dictionary after extraction:", symptoms_dict)
+    # print(f"\n[DEBUG] Number of matched symptoms: {matched_symptoms_count}")
+
+    # If no symptoms are matched or fewer than 10 symptoms are marked as 1, return None
+    if matched_symptoms_count < 10:
+        return None
 
     return symptoms_dict
 

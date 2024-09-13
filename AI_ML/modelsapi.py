@@ -71,20 +71,21 @@ classes = ['Fungal infection', 'Allergy', 'GERD', 'Chronic cholestasis', 'Drug R
            'Heart attack', 'Varicose veins', 'Hypothyroidism', 'Hyperthyroidism', 
            'Hypoglycemia', 'Osteoarthritis', 'Arthritis', '(Vertigo) Paroxysmal Positional Vertigo', 
            'Acne', 'Urinary tract infection', 'Psoriasis', 'Impetigo']
-
 def predict_disease(symptoms_input):
     """
     Predicts disease based on symptoms input using multiple models and selects the most frequent prediction.
     
     Args:
-    symptoms_input (dict): Input symptoms as features.
+    symptoms_input (dict or None): Input symptoms as features. If None, it means the symptoms were insufficient.
     
     Returns:
-    str: The predicted disease (most frequent prediction).
+    str: The predicted disease (most frequent prediction) or an error message if symptoms are insufficient.
     """
-    models = [best_xgb, best_lgb, svm_model, cat_model]
+    # Check if symptoms_input is None
+    if symptoms_input is None:
+        return "The symptom description is not sufficient, so no disease was predicted."
 
-    # print('Hey there',symptoms_input)
+    models = [best_xgb, best_lgb, svm_model, cat_model]
     
     # Convert symptoms input to DataFrame
     symptoms_df = pd.DataFrame([symptoms_input], columns=symptoms_input.keys())
@@ -103,4 +104,5 @@ def predict_disease(symptoms_input):
     # Ensure the predicted index is valid
     if most_common_prediction >= len(classes):
         return 'Invalid index'
+    
     return classes[most_common_prediction]
