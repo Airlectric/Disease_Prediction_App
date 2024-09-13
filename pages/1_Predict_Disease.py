@@ -4,7 +4,27 @@ import pandas as pd
 from AI_ML import entry_point, predict_disease, symptoms_list
 import streamlit.components.v1 as com
 
+# Function to set the background image
+def set_background():
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-image: url("https://img.freepik.com/free-photo/top-view-tensiometer-checking-blood-pressure_23-2150456065.jpg?t=st=1726185540~exp=1726189140~hmac=1239f086d5d0dee40a5f394a4568315b2db847f0234d9c1f503202ed000f54ac&w=740");
+            background-size: cover; /* Cover the entire page */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-attachment: fixed; /* Keep the image fixed while scrolling */
+            background-position: center; /* Center the image */
+            
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
 def predict_disease_page():
+    set_background()  # Call the function to set the background image
+
     # Create a container for the UI elements
     with st.container():
         col1, col2 = st.columns([1, 2])

@@ -1,0 +1,134 @@
+/* Center align the content */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6; /* Improve readability */
+    margin: 0; /* Remove default margin */
+    background-color: #f4f4f4; /* Neutral background color */
+}
+
+.stApp {
+    padding: 20px; /* Add padding to the app */
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px; /* Space below heading */
+}
+
+h2, h3, h4, h5 {
+    margin-top: 15px; /* Space above headings */
+    margin-bottom: 10px; /* Space below headings */
+    border-bottom: 2px solid #ddd; /* Light underline effect */
+    padding-bottom: 5px; /* Space below underline */
+}
+
+.stImage img {
+    border-radius: 5px; /* Small rounding for images */
+    max-width: 100%; /* Ensure images are responsive */
+    height: auto; /* Maintain aspect ratio */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s ease; /* Add scale effect on hover */
+}
+
+.stImage img:hover {
+    transform: scale(1.02); /* Slightly enlarge image on hover */
+}
+
+.slideshow-container {
+    max-width: 1000px; /* Limit slideshow width */
+    margin: auto; /* Center slideshow */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Prevent overflow */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.mySlides {
+    display: none; /* Hide slides by default */
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 2s;
+}
+
+@keyframes fade {
+    from { opacity: .4; }
+    to { opacity: 1; }
+}
+
+.stButton button {
+    background-color: #333; /* Default dark gray for buttons */
+    color: white;
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.stButton button:hover {
+    background-color: #555; /* Slightly lighter on hover */
+    color: white;
+    transform: scale(1.02); /* Slightly enlarge button on hover */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+/* Additional styling for image captions, if needed */
+
+/* Tips slideshow styles */
+.tips-slideshow-container {
+    margin: auto;
+    max-width: 800px;
+    text-align: center;
+    padding: 15px;
+}
+
+.tip {
+    display: none;
+    font-size: 1.2em;
+    padding: 20px;
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+.more-button {
+    background-color: #333; /* Dark gray button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 2px;
+    display: block;
+    margin: 10px auto 0; /* Center the button */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.more-button:hover {
+    background-color: #555; /* Lighter gray on hover */
+    transform: scale(1.02); /* Slightly enlarge button on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em; /* Adjust heading size on smaller screens */
+    }
+
+    .slideshow-container,
+    .tips-slideshow-container {
+        max-width: 90%; /* Reduce slideshow width on mobile */
+    }
+
+    .stButton button {
+        width: 100%; /* Full width buttons on mobile */
+        padding: 15px; /* Increase padding */
+    }
+
+    .tip {
+        font-size: 1em; /* Adjust tip font size on smaller screens */
+    }
+}
