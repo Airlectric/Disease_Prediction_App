@@ -106,7 +106,7 @@ Each model predicts the disease, and the most frequent prediction among the mode
 
 The welcome page provides an introduction to the disease prediction app and guides users on how to interact with the various features.
 
-![Welcome Page](/images/welcome.jpeg)
+![Welcome Page](images/welcome.JPG)
 
 ---
 
@@ -118,19 +118,19 @@ This is the core functionality of the app. Users can predict diseases based on s
 
 Users can manually select symptoms from a predefined list to make predictions.
 
-![Manual Input](/images/manualInput.jpeg)
+![Manual Input](images/manualInput.JPG)
 
 ### 2. **Text Input Symptom Description**
 
 Users can enter a free-text description of their symptoms, which is analyzed using the NLP model to extract relevant symptoms.
 
-![Text Input](/images/textInput.jpeg)
+![Text Input](images/textInput.JPG)
 
 ### 3. **Voice Input Symptom Description**
 
 Users can use voice input to describe their symptoms, and the system will automatically convert speech to text and make a prediction.
 
-![Voice Input](/images/voiceInput.jpeg)
+![Voice Input](images/voiceInput.JPG)
 
 ---
 
@@ -138,7 +138,7 @@ Users can use voice input to describe their symptoms, and the system will automa
 
 Once the prediction is made, the model provides the predicted disease, and the AI explains the disease in a user-friendly way. This includes a simple description of the disease and advice to seek medical attention.
 
-![Model Prediction with AI Explanation](/images/predictedMalaria.jpeg)
+![Model Prediction with AI Explanation](images/predictedMalaria.JPG)
 
 ---
 
@@ -146,7 +146,7 @@ Once the prediction is made, the model provides the predicted disease, and the A
 
 This page provides insights into the dataset used to train the machine learning models. Users can explore various statistics, charts, and visualizations.
 
-![EDA Page](/images/eda.jpeg)
+![EDA Page](images/eda.JPG)
 
 ---
 
@@ -154,7 +154,7 @@ This page provides insights into the dataset used to train the machine learning 
 
 The About Page explains the purpose of the app, its underlying technology stack, and offers additional details about the dataset and models used.
 
-![About Page](/images/about.jpeg)
+![About Page](images/about.JPG)
 
 
 ---
